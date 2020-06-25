@@ -1,4 +1,4 @@
-//2020-07-23 DNSQuery jorge@jorgechamorro.com
+//2020-07-23 dnsquery jorge@jorgechamorro.com
 
 module.exports= function(RED) {
 
@@ -6,7 +6,7 @@ module.exports= function(RED) {
     var dns= require("dns");
     var initial_dns_ip= dns.getServers()[0];
 
-    function DNSQuery (config) {
+    function dnsquery (config) {
 
         RED.nodes.createNode(this, config);
         var node= this;
@@ -106,5 +106,5 @@ module.exports= function(RED) {
             dns.resolve(domain, record_type, cb);
         });
     }
-    RED.nodes.registerType("DNSQuery", DNSQuery);
+    RED.nodes.registerType("dnsquery", dnsquery);
 };
