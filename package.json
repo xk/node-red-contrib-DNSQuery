@@ -1,0 +1,29 @@
+{
+  "name": "node-red-contrib-DNSQuery",
+  "version": "1.0.7",
+  "description": "Returns the ipv4 of a domain name.",
+  "author": "xk <jorge@jorgechamorro.com>",
+  "dependencies": {
+  },
+  "keywords": [
+    "node-red"
+  ],
+  "node-red": {
+    "nodes": {
+      "DNSQuery": "DNSQuery.js"
+    }
+  },
+  "main": "DNSQuery.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xk/node-red-contrib-DNSQuery.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xk/node-red-contrib-DNSQuery/issues"
+  },
+  "homepage": "https://github.com/xk/node-red-contrib-DNSQuery#readme"
+}

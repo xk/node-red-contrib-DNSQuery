@@ -1,0 +1,53 @@
+<script type="text/javascript">
+    RED.nodes.registerType('DNSQuery', {
+        category: 'dns',
+        color: '#a6bbcf',
+        defaults: {
+          name:           {value:""},
+          domain_name:    {value:""},
+          record_type:    {value:""},
+          dns_ip:         {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "white-globe.png",
+        label: function() {
+            return this.name || "DNSQuery";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="DNSQuery">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="">
+    </div>
+    <hr>
+    <div class="form-row">
+        <p>Enter the domain name:</p>
+        <p>(Overridden by a domain_name property in msg.payload)</p>
+        <label for="node-input-domain_name"><i class="fa fa-globe"></i> Domain Name</label>
+        <input type="text" id="node-input-domain_name" placeholder="example.com">
+    </div>
+    <div class="form-row">
+        <p>Enter the record type: (if empty gets the A record)</p>
+        <p>(Overridden by a record_type property in msg.payload)</p>
+        <label for="node-input-record_type"><i class="fa fa-globe"></i> Record type</label>
+        <input type="text" id="node-input-record_type" placeholder="A">
+    </div>
+    <div class="form-row">
+        <p>Use this DNS server IP: (Leave empty to use the default DNS)</p>
+        <label for="node-input-dns_ip"><i class="fa fa-globe"></i> DNS IP</label>
+        <input type="text" id="node-input-dns_ip" placeholder="0.0.0.0">
+    </div>
+    <hr>
+</script>
+
+<script type="text/html" data-help-name="DNSQuery">
+    <p>Gets the DNS records of a given type of a domain name. DNSQuery(v1.0.0)</p>
+    <p>By default gets the A records.<p>
+		<p>If in msg.payload there's a .domain_name:string, it overrides the domain_name setup in the config box Domain Name.</p>
+		<p>If in msg.payload there's a .record_type:string, it overrides the record_type setup in the config box Record Type.</p>
+		<p>Returns the data in msg.payload= { ok:boolean, domain:domain, type:record_type, answer:[records], error:errortxt, dns_ip:ip }</p>
+		<p>Uses by default the DNSs of the OS, but you can specify a different one in the config box DNS.</p>
+</script>
