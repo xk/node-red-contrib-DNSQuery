@@ -1,4 +1,4 @@
-//2020-07-23 dnsquery jorge@jorgechamorro.com
+//2020-07-25 dnsquery jorge@jorgechamorro.com
 
 module.exports= function(RED) {
 
@@ -24,10 +24,10 @@ module.exports= function(RED) {
           return (r.length === 4) ? r.join(".") : "";
         }
 
-				function isArray (p) {
-					//Miller device
-    			return (({}).toString.apply(p).toLowerCase().indexOf("array") > 0);
-				}
+        function isArray (p) {
+          //Miller device
+          return (({}).toString.apply(p).toLowerCase().indexOf("array") > 0);
+        }
 
         node.on('input', function (msg) {
 
@@ -49,9 +49,9 @@ module.exports= function(RED) {
 
             var err;
             var domain;
-        		var record_type;
+            var record_type;
 
-        		//Qué domain name hemos de mirar?
+            //Qué domain name hemos de mirar?
             //Si msg.payload contiene domain_name se usa msg.payload.domain_name
             //Si no, se intenta usar config.domain_name
 
@@ -69,18 +69,18 @@ module.exports= function(RED) {
             }
             else err= "invalid domain name";
 
-						//Qué record_type hemos de mirar?
+            //Qué record_type hemos de mirar?
             //Si msg.payload contiene record_type se usa msg.payload.record_type
             //Si no, se intenta usar config.record_type
             //Si no, se usa "A"
 
-						if (msg.payload && msg.payload.record_type) {
-							record_type= msg.payload.record_type;
-						}
-						else if (config.record_type) {
-							record_type= config.record_type;
-						}
-						else record_type= "A";
+            if (msg.payload && msg.payload.record_type) {
+              record_type= msg.payload.record_type;
+            }
+            else if (config.record_type) {
+              record_type= config.record_type;
+            }
+            else record_type= "A";
 
             if (err) {
               setTimeout(function () { cb(err, []); }, 0);

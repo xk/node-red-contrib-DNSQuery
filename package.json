@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-dnsquery",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Gets the DNS records of a given type of a domain name.",
   "author": "xk <jorge@jorgechamorro.com>",
   "dependencies": {},
