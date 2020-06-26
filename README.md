@@ -1,4 +1,4 @@
-Gets the DNS records of a given type of a domain name. 
+Gets the DNS records of a given type of a domain name.
 
 By default this node gets the A records, but other [record types](https://en.wikipedia.org/wiki/List_of_DNS_record_types) can be queried.  Enter the ***"ANY"*** to query all available records.
 
@@ -8,18 +8,18 @@ By default this node gets the A records, but other [record types](https://en.wik
 Returns the data in ```msg.payload``` with following content:
 ```
 {
-   ok:boolean, 
-   domain:domain, 
-   type:record_type, 
+   ok:boolean,
+   domain:domain,
+   type:record_type,
    answer:[
       records
    ],
-   error:errortxt, 
-   dns_ip:ip 
+   error:errortxt,
+   dns_ip:ip
 }
 ```
 Uses by default the DNSs of the OS, but you can specify a different one in the config box DNS.
-dnsquery(v1.0.2)
+dnsquery(v1.0.3)
 
 Example:
 
