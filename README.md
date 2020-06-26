@@ -19,7 +19,7 @@ Returns the data in ```msg.payload``` with following content:
 }
 ```
 Uses by default the DNSs of the OS, but you can specify a different one in the config box DNS.
-dnsquery(v1.0.3)
+dnsquery(v1.0.4)
 
 Example:
 
