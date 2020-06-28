@@ -17,7 +17,7 @@
             return this.name || "DNSQuery";
         },
         oneditprepare: function () {
-            var node = this;         
+            var node = this;
             function setupTypedInput(node, varName, types, def) {
                 let varSel = '#node-input-' + varName;
                 let typeSel = varSel + 'Type';
@@ -118,7 +118,7 @@
     <p>A node to query DNS</p>
     <h3>About</h3>
     <dl class="message-properties">
-        <dd>Gets the DNS records of a given type of a domain name. dnsquery(v1.0.4)</dd>
+        <dd>Gets the DNS records of a given type of a domain name. dnsquery(v1.0.5)</dd>
     </dl>
     <h3>Options</h3>
     <dl class="message-properties">
@@ -132,15 +132,15 @@
     <h3>Output</h3>
     <dl class="message-properties">
         <dt>payload <span class="property-type">object</span></dt>
-        <dd>Returns the data in <code>msg.payload</code> <pre>{ 
-  ok:boolean, 
-  domain:domain, 
-  type:record_type, 
-  answer:[records], 
-  error:errortxt, 
-  dns_ip:ip 
+        <dd>Returns the data in <code>msg.payload</code> <pre>{
+  ok:boolean,
+  domain:domain,
+  type:record_type,
+  answer:[records],
+  error:errortxt,
+  dns_ip:ip
 }</pre>
         </dd>
     </dl>
- 
+
 </script>
