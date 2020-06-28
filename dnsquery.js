@@ -12,6 +12,12 @@ module.exports= function(RED) {
         var node= this;
         var now_using_dns_ip= dns.getServers()[0];
 
+        node.domain_name = config.domain_name || ""
+        node.domain_nameType = config.domain_nameType || "str";
+        node.record_type = config.record_type || "A";
+        node.record_typeType = config.record_typeType || "rectype";
+        node.dns_ip = config.dns_ip;
+
         function validar_ip (ip) {
           var r= ip.split(".");
           if (r.length !== 4) return "";
@@ -54,42 +60,30 @@ module.exports= function(RED) {
             //Qué domain name hemos de mirar?
             //Si msg.payload contiene domain_name se usa msg.payload.domain_name
             //Si no, se intenta usar config.domain_name
-
-            if (msg.payload.domain_name) {
-              if (typeof msg.payload.domain_name === "string") {
-                domain= msg.payload.domain_name;
+            
+            RED.util.evaluateNodeProperty(node.domain_name,node.domain_nameType,node,msg,(error,value) => {
+              if (error) {
+                  err = error;
+              } else {
+                domain = value
               }
-              else err= "msg.payload.domain_name is not a string";
-            }
-            else if (config.domain_name) {
-              if (typeof config.domain_name === "string") {
-                domain= config.domain_name;
+            }); 
+            RED.util.evaluateNodeProperty(node.record_type,node.record_typeType,node,msg,(error,value) => {
+              if (error) {
+                  err = error;
+              } else {
+                record_type = value || "A"
               }
-              else err= "config.domain_name is not a string";
-            }
-            else err= "invalid domain name";
-
-            //Qué record_type hemos de mirar?
-            //Si msg.payload contiene record_type se usa msg.payload.record_type
-            //Si no, se intenta usar config.record_type
-            //Si no, se usa "A"
-
-            if (msg.payload && msg.payload.record_type) {
-              record_type= msg.payload.record_type;
-            }
-            else if (config.record_type) {
-              record_type= config.record_type;
-            }
-            else record_type= "A";
+            }); 
 
             if (err) {
               setTimeout(function () { cb(err, []); }, 0);
               return;
             }
 
-            if (config.dns_ip) {
-              if (typeof config.dns_ip === "string") {
-                var dns_ip= validar_ip(config.dns_ip);
+            if (node.dns_ip) {
+              if (typeof node.dns_ip === "string") {
+                var dns_ip= validar_ip(node.dns_ip);
                 if (dns_ip) {
                   if (dns_ip !== now_using_dns_ip) {
                     dns.setServers([ dns_ip ]);

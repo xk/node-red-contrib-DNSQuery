@@ -3,16 +3,84 @@
         category: 'dns',
         color: '#a6bbcf',
         defaults: {
-          name:           {value:""},
-          domain_name:    {value:""},
-          record_type:    {value:""},
-          dns_ip:         {value:""}
+          name:            { value:""},
+          domain_nameType: { value: "str" },
+          domain_name:     { value:""},
+          record_typeType: { value: "rectype" },
+          record_type:     { value:"A"},
+          dns_ip:          { value:""}
         },
         inputs:1,
         outputs:1,
         icon: "white-globe.png",
         label: function() {
             return this.name || "DNSQuery";
+        },
+        oneditprepare: function () {
+            var node = this;         
+            function setupTypedInput(node, varName, types, def) {
+                let varSel = '#node-input-' + varName;
+                let typeSel = varSel + 'Type';
+                let varVal = node[varName];
+                let typeVal = node[varName + 'Type'];
+                if (typeVal == null) typeVal = def;
+                $(varSel).typedInput({
+                    default: def,
+                    typeField: $(typeSel),
+                    types: types
+                });
+                $(varSel).typedInput('type', typeVal);
+                $(varSel).typedInput('value', varVal);
+            }
+
+            var recTypes ={
+                icon: "fa fa-globe",
+                value:"rectype",
+                label:"Record Type",
+                options: [
+                    { "value": "A", "label": "A (Host address)" },
+                    { "value": "AAAA", "label": "AAAA (IPv6 host address)" },
+                    { "value": "ANY", "label": "ANY (All available types)" },
+                    { "value": "CNAME", "label": "CNAME (Canonical name for an alias)" },
+                    { "value": "MX", "label": "MX (Mail eXchange)" },
+                    { "value": "NAPTR", "label": "NAPTR (Naming Authority Pointer)" },
+                    { "value": "NS", "label": "NS (Name Server)" },
+                    { "value": "PTR", "label": "PTR (Pointer)" },
+                    { "value": "SOA", "label": "SOA (Start Of Authority)" },
+                    { "value": "SRV", "label": "SRV (location of service)" },
+                    { "value": "TXT", "label": "TXT (Descriptive text)" },
+                    // { "value": "AXFR", "label": "AXFR (DNS zone transfer)" },
+                    // { "value": "ALIAS", "label": "ALIAS (Auto resolved alias)" },
+                    // { "value": "DNSKEY", "label": "DNSKEY (DNSSEC public key)" },
+                    // { "value": "DS", "label": "DS (Delegation Signer)" },
+                    // { "value": "NSEC", "label": "NSEC (Next Secure)" },
+                    // { "value": "NSEC3", "label": "NSEC3 (Next Secure v. 3)" },
+                    // { "value": "NSEC3PARAM", "label": "NSEC3PARAM (NSEC3 Parameters)" },
+                    // { "value": "RRSIG", "label": "RRSIG (RRset Signature)" },
+                    // { "value": "AFSDB", "label": "AFSDB (AFS Data Base location)" },
+                    // { "value": "ATMA", "label": "ATMA (Asynchronous Transfer Mode address)" },
+                    // { "value": "CAA", "label": "CAA (Certification Authority Authorization)" },
+                    // { "value": "CERT", "label": "CERT (Certificate / CRL)" },
+                    // { "value": "DHCID", "label": "DHCID (DHCP Information)" },
+                    // { "value": "DNAME", "label": "DNAME (Non-Terminal DNS Name Redirection)" },
+                    // { "value": "HINFO", "label": "HINFO (Host information)" },
+                    // { "value": "ISDN", "label": "ISDN (ISDN address)" },
+                    // { "value": "LOC", "label": "LOC (Location information)" },
+                    // { "value": "MB", "label": "MB (mailbox records)" },
+                    // { "value": "MG", "label": "MG (mailbox records)" },
+                    // { "value": "MINFO", "label": "MINFO (mailbox records)" },
+                    // { "value": "MR", "label": "MR (mailbox records)" },
+                    // { "value": "NSAP", "label": "NSAP (NSAP address)" },
+                    // { "value": "RP", "label": "RP (Responsible person)" },
+                    // { "value": "RT", "label": "RT (Route through)" },
+                    // { "value": "TLSA", "label": "TLSA (Transport Layer Security Authentication)" },
+                    // { "value": "X25", "label": "X25 (X.25 PSDN address)" },
+                ]
+            }
+
+            setupTypedInput(node, 'domain_name', ['msg', 'flow', 'global', 'str', 'env'], 'str');
+            setupTypedInput(node, 'record_type', [recTypes, 'msg', 'flow', 'global', 'str', 'env'], 'rectype');
+
         }
     });
 </script>
@@ -24,19 +92,21 @@
     </div>
     <hr>
     <div class="form-row">
-        <p>Enter the domain name:</p>
-        <p>(Overridden by a domain_name property in msg.payload)</p>
-        <label for="node-input-domain_name"><i class="fa fa-globe"></i> Domain Name</label>
+        <!-- <p>Enter the domain name:</p>
+        <p>(Overridden by a domain_name property in msg.payload)</p> -->
+        <input type="hidden" id="node-input-domain_nameType">
+        <label for="node-input-domain_name"><i class="fa fa-globe"></i> <span style="font-size: 0.9em;">Domain Name</span></label>
         <input type="text" id="node-input-domain_name" placeholder="example.com">
     </div>
     <div class="form-row">
-        <p>Enter the record type: (if empty gets the A record)</p>
-        <p>(Overridden by a record_type property in msg.payload)</p>
+        <!-- <p>Enter the record type: (if empty gets the A record)</p>
+        <p>(Overridden by a record_type property in msg.payload)</p> -->
+        <input type="hidden" id="node-input-record_typeType">
         <label for="node-input-record_type"><i class="fa fa-globe"></i> Record type</label>
         <input type="text" id="node-input-record_type" placeholder="A">
     </div>
     <div class="form-row">
-        <p>Use this DNS server IP: (Leave empty to use the default DNS)</p>
+        <!-- <p>Use this DNS server IP: (Leave empty to use the default DNS)</p> -->
         <label for="node-input-dns_ip"><i class="fa fa-globe"></i> DNS IP</label>
         <input type="text" id="node-input-dns_ip" placeholder="0.0.0.0">
     </div>
@@ -44,10 +114,33 @@
 </script>
 
 <script type="text/html" data-help-name="dnsquery">
-    <p>Gets the DNS records of a given type of a domain name. dnsquery(v1.0.4)</p>
-    <p>By default gets the A records.<p>
-    <p>If in msg.payload there's a .domain_name:string, it overrides the domain_name setup in the config box Domain Name.</p>
-    <p>If in msg.payload there's a .record_type:string, it overrides the record_type setup in the config box Record Type.</p>
-    <p>Returns the data in msg.payload= { ok:boolean, domain:domain, type:record_type, answer:[records], error:errortxt, dns_ip:ip }</p>
-    <p>Uses by default the DNSs of the OS, but you can specify a different one in the config box DNS.</p>
+
+    <p>A node to query DNS</p>
+    <h3>About</h3>
+    <dl class="message-properties">
+        <dd>Gets the DNS records of a given type of a domain name. dnsquery(v1.0.4)</dd>
+    </dl>
+    <h3>Options</h3>
+    <dl class="message-properties">
+        <dt>Domain name <span class="property-type">string</span></dt>
+        <dd> the domain name to look up</dd>
+        <dt>Record type <span class="property-type">string</span></dt>
+        <dd> the record type to get</dd>
+        <dt>DNS IP <span class="property-type">string (optional)</span></dt>
+        <dd> if blank, the DNSs of the OS is used, but you can specify a different one in this field</dd>
+    </dl>
+    <h3>Output</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">object</span></dt>
+        <dd>Returns the data in <code>msg.payload</code> <pre>{ 
+  ok:boolean, 
+  domain:domain, 
+  type:record_type, 
+  answer:[records], 
+  error:errortxt, 
+  dns_ip:ip 
+}</pre>
+        </dd>
+    </dl>
+ 
 </script>
