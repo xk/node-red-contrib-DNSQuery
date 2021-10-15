@@ -47,7 +47,7 @@ module.exports= function(RED) {
                 answer:o
               };
 
-              node.send(msg);
+              node.send(msg, false);
             });
         });
     }
